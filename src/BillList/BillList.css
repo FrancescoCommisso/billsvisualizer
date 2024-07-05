@@ -1,6 +1,7 @@
 /* src/BillList.css */
 .bill-list {
   margin: 20px 0;
+  overflow-x: auto;
 }
 
 table {

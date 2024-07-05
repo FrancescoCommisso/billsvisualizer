@@ -18,6 +18,12 @@ h2 {
   text-align: center;
 }
 
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 form {
   margin: 20px 0;
   display: flex;
@@ -91,6 +97,9 @@ input[type="file"] {
 .footer {
   margin-top: 20px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .footer button,
@@ -102,5 +111,37 @@ input[type="file"] {
 @media (max-width: 768px) {
   .calendar {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  .form-container {
+    flex-direction: column;
+  }
+
+  .footer {
+    flex-direction: column;
+  }
+
+  .footer button,
+  .footer input[type="file"] {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .form-container {
+    flex-direction: column;
+  }
+
+  .footer {
+    flex-direction: column;
+  }
+
+  .footer button,
+  .footer input[type="file"] {
+    width: 100%;
   }
 }

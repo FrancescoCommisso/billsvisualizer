@@ -112,7 +112,7 @@ const App = () => {
   return (
     <div className="App">
       <h1>Bill Visualizer</h1>
-      <div className="form-container">
+      {/* <div className="form-container">
         <label>
           Next Payday:
           <input
@@ -137,7 +137,7 @@ const App = () => {
             onChange={(e) => setCashOnHand(e.target.value)}
           />
         </label>
-      </div>
+      </div> */}
       <BillForm addBill={addBill} />
       <BillList bills={bills} deleteBill={deleteBill} />
       <Calendar bills={bills} nextPayday={nextPayday} />
