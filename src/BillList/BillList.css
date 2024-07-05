@@ -8,20 +8,20 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin: 20px 0;
-  background-color: #fff;
+  background-color: #1e1e1e;
   border-radius: 4px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 thead {
-  background-color: #4a90e2;
-  color: #fff;
+  background-color: #333;
+  color: #e0e0e0;
 }
 
 th,
 td {
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #333;
   text-align: left;
 }
 
@@ -30,11 +30,11 @@ th {
 }
 
 tbody tr:nth-child(odd) {
-  background-color: #f9f9f9;
+  background-color: #2c2c2c;
 }
 
 tbody tr:hover {
-  background-color: #f1f1f1;
+  background-color: #333;
 }
 
 td.actions {
@@ -43,7 +43,7 @@ td.actions {
 
 button {
   background-color: #e74c3c;
-  color: #fff;
+  color: #e0e0e0;
   padding: 5px 10px;
   border: none;
   border-radius: 4px;

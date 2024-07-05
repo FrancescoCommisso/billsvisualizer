@@ -7,17 +7,17 @@
 }
 
 .day {
-  border: 1px solid #ddd;
+  border: 1px solid #333;
   padding: 10px;
-  background-color: #fff;
+  background-color: #1e1e1e;
   border-radius: 4px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   text-align: center;
 }
 
 .date-title {
-  background-color: #4a90e2;
-  color: #fff;
+  background-color: #32ff5b;
+  color: #121212;
   padding: 5px 0;
   border-radius: 4px 4px 0 0;
   font-weight: bold;
@@ -30,21 +30,21 @@ ul {
 }
 
 .bill-card {
-  background-color: #f4f6f9;
-  border: 1px solid #ddd;
+  background-color: #333;
+  border: 1px solid #555;
   border-radius: 4px;
   padding: 10px;
   margin: 5px 0;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 .bill-title {
   font-weight: bold;
-  color: #4a90e2;
+  color: #32ff5b;
 }
 
 .bill-amount {
-  color: #e74c3c;
+  color: #ff5543;
 }
 
 @media (max-width: 768px) {

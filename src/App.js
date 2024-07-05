@@ -112,32 +112,26 @@ const App = () => {
   return (
     <div className="App">
       <h1>Bill Visualizer</h1>
-      {/* <div className="form-container">
-        <label>
-          Next Payday:
-          <input
-            type="date"
-            value={nextPayday}
-            onChange={(e) => setNextPayday(e.target.value)}
-          />
-        </label>
-        <label>
-          Pay Amount:
-          <input
-            type="number"
-            value={payAmount}
-            onChange={(e) => setPayAmount(e.target.value)}
-          />
-        </label>
-        <label>
-          Cash on Hand:
-          <input
-            type="number"
-            value={cashOnHand}
-            onChange={(e) => setCashOnHand(e.target.value)}
-          />
-        </label>
-      </div> */}
+      <div className="form-container">
+        <input
+          type="date"
+          value={nextPayday}
+          onChange={(e) => setNextPayday(e.target.value)}
+          placeholder="Next Payday"
+        />
+        <input
+          type="number"
+          value={payAmount}
+          onChange={(e) => setPayAmount(e.target.value)}
+          placeholder="Pay Amount"
+        />
+        <input
+          type="number"
+          value={cashOnHand}
+          onChange={(e) => setCashOnHand(e.target.value)}
+          placeholder="Cash on Hand"
+        />
+      </div>
       <BillForm addBill={addBill} />
       <BillList bills={bills} deleteBill={deleteBill} />
       <Calendar bills={bills} nextPayday={nextPayday} />

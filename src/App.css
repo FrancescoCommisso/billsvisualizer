@@ -2,8 +2,8 @@
 body {
   margin: 0;
   font-family: "Roboto", sans-serif;
-  background-color: #f4f6f9;
-  color: #333;
+  background-color: #121212;
+  color: #e0e0e0;
 }
 
 .App {
@@ -14,7 +14,7 @@ body {
 
 h1,
 h2 {
-  color: #4a90e2;
+  color: #32ff5b;
   text-align: center;
 }
 
@@ -31,27 +31,22 @@ form {
   gap: 10px;
 }
 
-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: bold;
-}
-
 input[type="date"],
 input[type="number"],
 input[type="file"],
 input[type="text"] {
   padding: 8px;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid #333;
+  background-color: #333;
+  color: #e0e0e0;
   font-size: 1rem;
   flex: 1;
 }
 
 button {
-  background-color: #4a90e2;
-  color: #fff;
+  background-color: #32ff5b;
+  color: #121212;
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
@@ -60,7 +55,7 @@ button {
 }
 
 button:hover {
-  background-color: #357ab8;
+  background-color: #32ff5b;
 }
 
 .calendar {
@@ -71,17 +66,20 @@ button:hover {
 }
 
 .day {
-  border: 1px solid #ddd;
+  border: 1px solid #333;
   padding: 10px;
-  background-color: #fff;
+  background-color: #1e1e1e;
   border-radius: 4px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   text-align: center;
 }
 
-.day strong {
-  display: block;
-  margin-bottom: 10px;
+.date-title {
+  background-color: #32ff5b;
+  color: #121212;
+  padding: 5px 0;
+  border-radius: 4px 4px 0 0;
+  font-weight: bold;
 }
 
 ul {

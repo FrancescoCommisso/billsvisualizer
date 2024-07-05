@@ -27,7 +27,7 @@ const Calendar = ({ bills, nextPayday }) => {
     const options = { weekday: "short", day: "2-digit" };
     return date
       .toLocaleDateString("en-US", options)
-      .toLowerCase()
+      .toUpperCase()
       .replace(",", "");
   };
 
