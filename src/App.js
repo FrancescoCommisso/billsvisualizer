@@ -46,6 +46,11 @@ const App = () => {
     setBills([...bills, bill]);
   };
 
+  const deleteBill = (index) => {
+    const newBills = bills.filter((_, i) => i !== index);
+    setBills(newBills);
+  };
+
   const generateMonthlyOccurrences = (bill) => {
     const occurrences = [];
     const billDate = new Date(bill.nextBillDate);
@@ -134,7 +139,7 @@ const App = () => {
         </label>
       </div>
       <BillForm addBill={addBill} />
-      <BillList bills={bills} />
+      <BillList bills={bills} deleteBill={deleteBill} />
       <Calendar bills={bills} nextPayday={nextPayday} />
       <div className="footer">
         <h2>

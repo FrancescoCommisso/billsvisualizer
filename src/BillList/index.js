@@ -2,7 +2,7 @@
 import React from "react";
 import "./BillList.css";
 
-const BillList = ({ bills }) => (
+const BillList = ({ bills, deleteBill }) => (
   <div className="bill-list">
     <h2>Upcoming Bills</h2>
     {bills.length > 0 ? (
@@ -11,8 +11,8 @@ const BillList = ({ bills }) => (
           <tr>
             <th>Title</th>
             <th>Amount</th>
-            <th>Description</th>
             <th>Next Bill Date</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -20,8 +20,10 @@ const BillList = ({ bills }) => (
             <tr key={index}>
               <td>{bill.title}</td>
               <td>${bill.amount}</td>
-              <td>{bill.description}</td>
               <td>{bill.nextBillDate}</td>
+              <td className="actions">
+                <button onClick={() => deleteBill(index)}>Delete</button>
+              </td>
             </tr>
           ))}
         </tbody>

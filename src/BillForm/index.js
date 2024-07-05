@@ -5,15 +5,13 @@ import "./BillForm.css";
 const BillForm = ({ addBill }) => {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
-  const [description, setDescription] = useState("");
   const [nextBillDate, setNextBillDate] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addBill({ title, amount, description, nextBillDate });
+    addBill({ title, amount, nextBillDate });
     setTitle("");
     setAmount("");
-    setDescription("");
     setNextBillDate("");
   };
 
@@ -34,14 +32,6 @@ const BillForm = ({ addBill }) => {
           type="number"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
-        />
-      </label>
-      <label>
-        Description:
-        <input
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
         />
       </label>
       <label>
