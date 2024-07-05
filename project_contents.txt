@@ -1,0 +1,585 @@
+==== Project Tree ====
+| | |____index.js
+| | |____BillList.css
+| | |____index.js
+| | |____Calendar.css
+| |____reportWebVitals.js
+| |____App.css
+| |____index.js
+| |____index.css
+| |____App.test.js
+| | |____index.js
+| | |____BillForm.css
+| |____setupTests.js
+| |____App.js
+
+
+==== File: ./src/App.css ====
+/* src/App.css */
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  background-color: #f4f6f9;
+  color: #333;
+}
+
+.App {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1,
+h2 {
+  color: #4a90e2;
+  text-align: center;
+}
+
+form {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+input[type="date"],
+input[type="number"],
+input[type="file"],
+input[type="text"] {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  flex: 1;
+}
+
+button {
+  background-color: #4a90e2;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #357ab8;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  padding: 20px;
+}
+
+.day {
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.day strong {
+  display: block;
+  margin-bottom: 10px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+input[type="file"] {
+  margin-top: 10px;
+}
+
+.footer {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.footer button,
+.footer input[type="file"] {
+  margin-top: 10px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .calendar {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+
+==== File: ./src/App.js ====
+// src/App.js
+import React, { useState, useEffect } from "react";
+import BillForm from "./BillForm";
+import BillList from "./BillList";
+import Calendar from "./Calendar";
+import Cookies from "js-cookie";
+import "./App.css";
+
+const App = () => {
+  const [bills, setBills] = useState([]);
+  const [nextPayday, setNextPayday] = useState("");
+  const [payAmount, setPayAmount] = useState("");
+  const [cashOnHand, setCashOnHand] = useState("");
+
+  useEffect(() => {
+    const savedBills = Cookies.get("bills");
+    const savedNextPayday = Cookies.get("nextPayday");
+    const savedPayAmount = Cookies.get("payAmount");
+    const savedCashOnHand = Cookies.get("cashOnHand");
+
+    if (savedBills) setBills(JSON.parse(savedBills));
+    if (savedNextPayday) setNextPayday(savedNextPayday);
+    if (savedPayAmount) setPayAmount(savedPayAmount);
+    if (savedCashOnHand) setCashOnHand(savedCashOnHand);
+  }, []);
+
+  useEffect(() => {
+    Cookies.set("bills", JSON.stringify(bills));
+    Cookies.set("nextPayday", nextPayday);
+    Cookies.set("payAmount", payAmount);
+    Cookies.set("cashOnHand", cashOnHand);
+  }, [bills, nextPayday, payAmount, cashOnHand]);
+
+  const addBill = (bill) => {
+    setBills([...bills, bill]);
+  };
+
+  const generateMonthlyOccurrences = (bill) => {
+    const occurrences = [];
+    const billDate = new Date(bill.nextBillDate);
+    const end = new Date(nextPayday);
+
+    while (billDate <= end) {
+      occurrences.push(new Date(billDate).toISOString().split("T")[0]);
+      billDate.setMonth(billDate.getMonth() + 1);
+    }
+
+    return occurrences;
+  };
+
+  const totalBillsDueBeforeNextPaycheck = () => {
+    const payday = new Date(nextPayday);
+    const allOccurrences = bills.flatMap(generateMonthlyOccurrences);
+
+    return bills.reduce((total, bill) => {
+      const billOccurrences = generateMonthlyOccurrences(bill);
+      const billDueBeforePayday = billOccurrences.filter(
+        (date) => new Date(date) <= payday
+      );
+
+      return total + billDueBeforePayday.length * parseFloat(bill.amount);
+    }, 0);
+  };
+
+  const exportData = () => {
+    const data = {
+      bills,
+      nextPayday,
+      payAmount,
+      cashOnHand,
+    };
+    const dataStr =
+      "data:text/json;charset=utf-8," +
+      encodeURIComponent(JSON.stringify(data));
+    const downloadAnchorNode = document.createElement("a");
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "data.json");
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  };
+
+  const importData = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const importedData = JSON.parse(e.target.result);
+      setBills(importedData.bills || []);
+      setNextPayday(importedData.nextPayday || "");
+      setPayAmount(importedData.payAmount || "");
+      setCashOnHand(importedData.cashOnHand || "");
+    };
+    reader.readAsText(file);
+  };
+
+  return (
+    <div className="App">
+      <h1>Bill Visualizer</h1>
+      <div className="form-container">
+        <label>
+          Next Payday:
+          <input
+            type="date"
+            value={nextPayday}
+            onChange={(e) => setNextPayday(e.target.value)}
+          />
+        </label>
+        <label>
+          Pay Amount:
+          <input
+            type="number"
+            value={payAmount}
+            onChange={(e) => setPayAmount(e.target.value)}
+          />
+        </label>
+        <label>
+          Cash on Hand:
+          <input
+            type="number"
+            value={cashOnHand}
+            onChange={(e) => setCashOnHand(e.target.value)}
+          />
+        </label>
+      </div>
+      <BillForm addBill={addBill} />
+      <BillList bills={bills} />
+      <Calendar bills={bills} nextPayday={nextPayday} />
+      <div className="footer">
+        <h2>
+          Total Bills Due Before Next Paycheck: $
+          {totalBillsDueBeforeNextPaycheck().toFixed(2)}
+        </h2>
+        <button onClick={exportData}>Export Data</button>
+        <input type="file" accept="application/json" onChange={importData} />
+      </div>
+    </div>
+  );
+};
+
+export default App;
+
+
+==== File: ./src/App.test.js ====
+import { render, screen } from '@testing-library/react';
+import App from './App';
+
+test('renders learn react link', () => {
+  render(<App />);
+  const linkElement = screen.getByText(/learn react/i);
+  expect(linkElement).toBeInTheDocument();
+});
+
+
+==== File: ./src/BillForm/BillForm.css ====
+/* src/BillForm.css */
+form {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+input[type="date"],
+input[type="number"],
+input[type="text"] {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  flex: 1;
+}
+
+button {
+  background-color: #4a90e2;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #357ab8;
+}
+
+
+==== File: ./src/BillForm/index.js ====
+// src/BillForm.js
+import React, { useState } from "react";
+import "./BillForm.css";
+
+const BillForm = ({ addBill }) => {
+  const [title, setTitle] = useState("");
+  const [amount, setAmount] = useState("");
+  const [description, setDescription] = useState("");
+  const [nextBillDate, setNextBillDate] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addBill({ title, amount, description, nextBillDate });
+    setTitle("");
+    setAmount("");
+    setDescription("");
+    setNextBillDate("");
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <h2>Add a Bill</h2>
+      <label>
+        Title:
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </label>
+      <label>
+        Amount:
+        <input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
+      </label>
+      <label>
+        Description:
+        <input
+          type="text"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </label>
+      <label>
+        Next Bill Date:
+        <input
+          type="date"
+          value={nextBillDate}
+          onChange={(e) => setNextBillDate(e.target.value)}
+        />
+      </label>
+      <button type="submit">Add Bill</button>
+    </form>
+  );
+};
+
+export default BillForm;
+
+
+==== File: ./src/BillList/BillList.css ====
+/* src/BillList.css */
+.bill-list {
+  margin: 20px 0;
+}
+
+.bill-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.bill-item strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+
+==== File: ./src/BillList/index.js ====
+// src/BillList.js
+import React from "react";
+import "./BillList.css";
+
+const BillList = ({ bills }) => (
+  <div className="bill-list">
+    <h2>Upcoming Bills</h2>
+    <ul>
+      {bills.map((bill, index) => (
+        <li key={index} className="bill-item">
+          <strong>{bill.title}</strong> - ${bill.amount} on {bill.nextBillDate}
+          <p>{bill.description}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
+
+export default BillList;
+
+
+==== File: ./src/Calendar/Calendar.css ====
+/* src/Calendar.css */
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  padding: 20px;
+}
+
+.day {
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.day strong {
+  display: block;
+  margin-bottom: 10px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .calendar {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+
+==== File: ./src/Calendar/index.js ====
+// src/Calendar.js
+import React from "react";
+import "./Calendar.css";
+
+const Calendar = ({ bills, nextPayday }) => {
+  const start = new Date();
+  const end = new Date(nextPayday);
+  const days = [];
+
+  for (let day = start; day <= end; day.setDate(day.getDate() + 1)) {
+    const dateString = day.toISOString().split("T")[0];
+    days.push(new Date(day)); // Store date objects
+  }
+
+  const generateMonthlyOccurrences = (bill) => {
+    const occurrences = [];
+    const billDate = new Date(bill.nextBillDate);
+
+    while (billDate <= end) {
+      occurrences.push(new Date(billDate).toISOString().split("T")[0]);
+      billDate.setMonth(billDate.getMonth() + 1);
+    }
+
+    return occurrences;
+  };
+
+  const formatDate = (date) => {
+    const options = { weekday: "short", month: "short", day: "2-digit" };
+    return date.toLocaleDateString("en-US", options).toUpperCase();
+  };
+
+  return (
+    <div>
+      <h2>Calendar</h2>
+      <div className="calendar">
+        {days.map((day) => (
+          <div key={day.toISOString()} className="day">
+            <strong>{formatDate(day)}</strong>
+            <ul>
+              {bills
+                .filter((bill) =>
+                  generateMonthlyOccurrences(bill).includes(
+                    day.toISOString().split("T")[0]
+                  )
+                )
+                .map((bill, index) => (
+                  <li key={index}>
+                    {bill.title} - ${bill.amount}
+                  </li>
+                ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Calendar;
+
+
+==== File: ./src/index.css ====
+/* src/index.css */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  background-color: #f4f6f9;
+  color: #333;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+
+==== File: ./src/index.js ====
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
+
+
+==== File: ./src/reportWebVitals.js ====
+const reportWebVitals = onPerfEntry => {
+  if (onPerfEntry && onPerfEntry instanceof Function) {
+    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+      getCLS(onPerfEntry);
+      getFID(onPerfEntry);
+      getFCP(onPerfEntry);
+      getLCP(onPerfEntry);
+      getTTFB(onPerfEntry);
+    });
+  }
+};
+
+export default reportWebVitals;
+
+
+==== File: ./src/setupTests.js ====
+// jest-dom adds custom jest matchers for asserting on DOM nodes.
+// allows you to do things like:
+// expect(element).toHaveTextContent(/react/i)
+// learn more: https://github.com/testing-library/jest-dom
+import '@testing-library/jest-dom';
+
+

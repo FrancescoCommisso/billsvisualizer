@@ -26,6 +26,28 @@ ul {
   margin: 0;
 }
 
+.bill-card {
+  background-color: #f4f6f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 5px 0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.bill-title {
+  font-weight: bold;
+  color: #4a90e2;
+}
+
+.bill-amount {
+  color: #e74c3c;
+}
+
+.bill-description {
+  color: #555;
+}
+
 @media (max-width: 768px) {
   .calendar {
     grid-template-columns: repeat(4, 1fr);

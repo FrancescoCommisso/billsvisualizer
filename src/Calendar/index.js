@@ -1,4 +1,4 @@
-// src/Calendar.js
+// src/Calendar/index.js
 import React from "react";
 import "./Calendar.css";
 
@@ -8,7 +8,6 @@ const Calendar = ({ bills, nextPayday }) => {
   const days = [];
 
   for (let day = start; day <= end; day.setDate(day.getDate() + 1)) {
-    const dateString = day.toISOString().split("T")[0];
     days.push(new Date(day)); // Store date objects
   }
 
@@ -44,8 +43,10 @@ const Calendar = ({ bills, nextPayday }) => {
                   )
                 )
                 .map((bill, index) => (
-                  <li key={index}>
-                    {bill.title} - ${bill.amount}
+                  <li key={index} className="bill-card">
+                    <div className="bill-title">{bill.title}</div>
+                    <div className="bill-amount">${bill.amount}</div>
+                    <div className="bill-description">{bill.description}</div>
                   </li>
                 ))}
             </ul>

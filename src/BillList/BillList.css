@@ -3,13 +3,37 @@
   margin: 20px 0;
 }
 
-.bill-item {
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
   background-color: #fff;
-  border: 1px solid #ddd;
   border-radius: 4px;
-  padding: 10px;
-  margin-bottom: 10px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+  background-color: #4a90e2;
+  color: #fff;
+}
+
+th,
+td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  font-weight: bold;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+  background-color: #f1f1f1;
 }
 
 .bill-item strong {
