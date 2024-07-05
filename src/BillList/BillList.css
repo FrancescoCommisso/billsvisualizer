@@ -1,0 +1,18 @@
+/* src/BillList.css */
+.bill-list {
+  margin: 20px 0;
+}
+
+.bill-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.bill-item strong {
+  display: block;
+  margin-bottom: 5px;
+}

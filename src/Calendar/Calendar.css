@@ -9,7 +9,7 @@
 .day {
   border: 1px solid #ddd;
   padding: 10px;
-  background-color: #f9f9f9;
+  background-color: #fff;
   border-radius: 4px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -24,4 +24,10 @@ ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
+}
+
+@media (max-width: 768px) {
+  .calendar {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }

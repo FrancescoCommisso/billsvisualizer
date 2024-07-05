@@ -96,7 +96,7 @@ const App = () => {
   return (
     <div className="App">
       <h1>Bill Visualizer</h1>
-      <div>
+      <div className="form-container">
         <label>
           Next Payday:
           <input
@@ -125,13 +125,11 @@ const App = () => {
       <BillForm addBill={addBill} />
       <BillList bills={bills} />
       <Calendar bills={bills} nextPayday={nextPayday} />
-      <div>
+      <div className="footer">
         <h2>
           Total Bills Due Before Next Paycheck: $
           {totalBillsDueBeforeNextPaycheck().toFixed(2)}
         </h2>
-      </div>
-      <div>
         <button onClick={exportData}>Export Data</button>
         <input type="file" accept="application/json" onChange={importData} />
       </div>

@@ -1,5 +1,6 @@
 // src/BillForm.js
 import React, { useState } from "react";
+import "./BillForm.css";
 
 const BillForm = ({ addBill }) => {
   const [title, setTitle] = useState("");
