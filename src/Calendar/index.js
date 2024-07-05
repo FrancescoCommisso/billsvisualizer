@@ -1,4 +1,4 @@
-// src/Calendar/index.js
+// src/Calendar.js
 import React from "react";
 import "./Calendar.css";
 
@@ -24,8 +24,11 @@ const Calendar = ({ bills, nextPayday }) => {
   };
 
   const formatDate = (date) => {
-    const options = { weekday: "short", month: "short", day: "2-digit" };
-    return date.toLocaleDateString("en-US", options).toUpperCase();
+    const options = { weekday: "short", day: "2-digit" };
+    return date
+      .toLocaleDateString("en-US", options)
+      .toLowerCase()
+      .replace(",", "");
   };
 
   return (
@@ -34,7 +37,7 @@ const Calendar = ({ bills, nextPayday }) => {
       <div className="calendar">
         {days.map((day) => (
           <div key={day.toISOString()} className="day">
-            <strong>{formatDate(day)}</strong>
+            <div className="date-title">{formatDate(day)}</div>
             <ul>
               {bills
                 .filter((bill) =>
@@ -46,7 +49,6 @@ const Calendar = ({ bills, nextPayday }) => {
                   <li key={index} className="bill-card">
                     <div className="bill-title">{bill.title}</div>
                     <div className="bill-amount">${bill.amount}</div>
-                    <div className="bill-description">{bill.description}</div>
                   </li>
                 ))}
             </ul>

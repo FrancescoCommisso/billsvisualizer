@@ -18,30 +18,24 @@ const BillForm = ({ addBill }) => {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Add a Bill</h2>
-      <label>
-        Title:
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </label>
-      <label>
-        Amount:
-        <input
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-      </label>
-      <label>
-        Next Bill Date:
-        <input
-          type="date"
-          value={nextBillDate}
-          onChange={(e) => setNextBillDate(e.target.value)}
-        />
-      </label>
+      <input
+        type="text"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Title"
+      />
+      <input
+        type="number"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        placeholder="Amount"
+      />
+      <input
+        type="date"
+        value={nextBillDate}
+        onChange={(e) => setNextBillDate(e.target.value)}
+        placeholder="Next Bill Date"
+      />
       <button type="submit">Add Bill</button>
     </form>
   );

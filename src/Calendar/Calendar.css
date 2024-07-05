@@ -15,9 +15,12 @@
   text-align: center;
 }
 
-.day strong {
-  display: block;
-  margin-bottom: 10px;
+.date-title {
+  background-color: #4a90e2;
+  color: #fff;
+  padding: 5px 0;
+  border-radius: 4px 4px 0 0;
+  font-weight: bold;
 }
 
 ul {
@@ -44,12 +47,14 @@ ul {
   color: #e74c3c;
 }
 
-.bill-description {
-  color: #555;
-}
-
 @media (max-width: 768px) {
   .calendar {
     grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
