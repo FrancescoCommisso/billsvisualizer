@@ -1,0 +1,25 @@
+{
+  "bills": [
+    {
+      "title": "hydro",
+      "amount": "60",
+      "description": "",
+      "nextBillDate": "2024-08-04"
+    },
+    {
+      "title": "gas",
+      "amount": "41",
+      "description": "enbridge",
+      "nextBillDate": "2024-07-11"
+    },
+    {
+      "title": "mortgage1",
+      "amount": "2048",
+      "description": "",
+      "nextBillDate": "2024-07-12"
+    }
+  ],
+  "nextPayday": "2024-07-19",
+  "payAmount": "3000",
+  "cashOnHand": "3500"
+}
