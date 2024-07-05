@@ -1,8 +1,8 @@
 // src/App.js
 import React, { useState, useEffect } from "react";
-import BillForm from "./BillForm/index";
-import BillList from "./BillList/index";
-import Calendar from "./Calendar/index";
+import BillForm from "./BillForm";
+import BillList from "./BillList";
+import Calendar from "./Calendar";
 import Cookies from "js-cookie";
 import "./App.css";
 
@@ -35,14 +35,30 @@ const App = () => {
     setBills([...bills, bill]);
   };
 
+  const generateMonthlyOccurrences = (bill) => {
+    const occurrences = [];
+    const billDate = new Date(bill.nextBillDate);
+    const end = new Date(nextPayday);
+
+    while (billDate <= end) {
+      occurrences.push(new Date(billDate).toISOString().split("T")[0]);
+      billDate.setMonth(billDate.getMonth() + 1);
+    }
+
+    return occurrences;
+  };
+
   const totalBillsDueBeforeNextPaycheck = () => {
     const payday = new Date(nextPayday);
+    const allOccurrences = bills.flatMap(generateMonthlyOccurrences);
+
     return bills.reduce((total, bill) => {
-      const billDate = new Date(bill.nextBillDate);
-      if (billDate <= payday) {
-        return total + parseFloat(bill.amount);
-      }
-      return total;
+      const billOccurrences = generateMonthlyOccurrences(bill);
+      const billDueBeforePayday = billOccurrences.filter(
+        (date) => new Date(date) <= payday
+      );
+
+      return total + billDueBeforePayday.length * parseFloat(bill.amount);
     }, 0);
   };
 
