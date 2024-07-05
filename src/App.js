@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useState, useEffect } from "react";
 import BillForm from "./BillForm";
 import BillList from "./BillList";
@@ -7,28 +6,40 @@ import Cookies from "js-cookie";
 import "./App.css";
 
 const App = () => {
-  const [bills, setBills] = useState([]);
-  const [nextPayday, setNextPayday] = useState("");
-  const [payAmount, setPayAmount] = useState("");
-  const [cashOnHand, setCashOnHand] = useState("");
-
-  useEffect(() => {
+  const initializeBills = () => {
     const savedBills = Cookies.get("bills");
-    const savedNextPayday = Cookies.get("nextPayday");
-    const savedPayAmount = Cookies.get("payAmount");
-    const savedCashOnHand = Cookies.get("cashOnHand");
+    return savedBills ? JSON.parse(savedBills) : [];
+  };
 
-    if (savedBills) setBills(JSON.parse(savedBills));
-    if (savedNextPayday) setNextPayday(savedNextPayday);
-    if (savedPayAmount) setPayAmount(savedPayAmount);
-    if (savedCashOnHand) setCashOnHand(savedCashOnHand);
-  }, []);
+  const initializeNextPayday = () => {
+    const savedNextPayday = Cookies.get("nextPayday");
+    return savedNextPayday || "";
+  };
+
+  const initializePayAmount = () => {
+    const savedPayAmount = Cookies.get("payAmount");
+    return savedPayAmount || "";
+  };
+
+  const initializeCashOnHand = () => {
+    const savedCashOnHand = Cookies.get("cashOnHand");
+    return savedCashOnHand || "";
+  };
+
+  const [bills, setBills] = useState(initializeBills);
+  const [nextPayday, setNextPayday] = useState(initializeNextPayday);
+  const [payAmount, setPayAmount] = useState(initializePayAmount);
+  const [cashOnHand, setCashOnHand] = useState(initializeCashOnHand);
+
+  const saveToCookies = () => {
+    Cookies.set("bills", JSON.stringify(bills), { expires: 365 });
+    Cookies.set("nextPayday", nextPayday, { expires: 365 });
+    Cookies.set("payAmount", payAmount, { expires: 365 });
+    Cookies.set("cashOnHand", cashOnHand, { expires: 365 });
+  };
 
   useEffect(() => {
-    Cookies.set("bills", JSON.stringify(bills));
-    Cookies.set("nextPayday", nextPayday);
-    Cookies.set("payAmount", payAmount);
-    Cookies.set("cashOnHand", cashOnHand);
+    saveToCookies();
   }, [bills, nextPayday, payAmount, cashOnHand]);
 
   const addBill = (bill) => {
@@ -132,6 +143,7 @@ const App = () => {
         </h2>
         <button onClick={exportData}>Export Data</button>
         <input type="file" accept="application/json" onChange={importData} />
+        <button onClick={saveToCookies}>Save Data</button>
       </div>
     </div>
   );
